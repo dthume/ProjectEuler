@@ -40,7 +40,8 @@ do not exceed four million."
   )
 
 (defn problem4
-  "What is the difference between the sum of the squares and the square of the sums?"
+  "What is the difference between the sum of the squares and the square of
+the sums?"
   []
   (let [square #(* %1 %1)
 	numbers (range 1 101)
@@ -58,6 +59,18 @@ do not exceed four million."
 	 i false))
      (iterate #(+ % 20) 20))))
 
+(defn problem20
+  "Find the sum of digits in 100!"
+  []
+  (let [total (loop [total 100
+		     current (dec total)]
+		(if (zero? current)
+		  total
+		  (recur (* total current) (dec current))))]
+    (apply +
+	   (map #(Integer/parseInt (.toString %))
+		(.toString total)))))
+
 (comment
   
   (println (problem1))
@@ -65,5 +78,5 @@ do not exceed four million."
   (println (problem3 600851475143))
   (println (problem4))
   (println (problem5))
-
+  (println (problem20))
 )
