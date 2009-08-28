@@ -62,11 +62,7 @@ the sums?"
 (defn problem20
   "Find the sum of digits in 100!"
   []
-  (let [total (loop [total 100
-		     current (dec total)]
-		(if (zero? current)
-		  total
-		  (recur (* total current) (dec current))))]
+  (let [total (apply * (range 1 101))]
     (apply +
 	   (map #(Integer/parseInt (.toString %))
 		(.toString total)))))
