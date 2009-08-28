@@ -52,16 +52,6 @@ do not exceed four million."
   ; b) they are prime
   )
 
-(defn problem4
-  "What is the difference between the sum of the squares and the square of
-the sums?"
-  []
-  (let [square #(* %1 %1)
-	numbers (range 1 101)
-	squaresum (long (square (apply + numbers)))
-	sumsquare (long (apply + (map square numbers)))]
-    (- squaresum sumsquare)))
-
 (defn problem5
   "What is the smallest number divisible by each of the numbers 1 to 20?"
   []
@@ -71,6 +61,16 @@ the sums?"
        (if (every? #(zero? (rem i %)) divs)
 	 i false))
      (iterate #(+ % 20) 20))))
+
+(defn problem6
+  "What is the difference between the sum of the squares and the square of
+the sums?"
+  []
+  (let [square #(* %1 %1)
+	numbers (range 1 101)
+	squaresum (long (square (apply + numbers)))
+	sumsquare (long (apply + (map square numbers)))]
+    (- squaresum sumsquare)))
 
 (defn problem8
   "Discover the largest product of five consecutive digits in the 1000-digit
@@ -98,8 +98,8 @@ number."
   (println (problem1))
   (println (problem2))
   (println (problem3 600851475143))
-  (println (problem4))
   (println (problem5))
+  (println (problem6))
   (println (problem8))
   (println (problem16))
   (println (problem20))
