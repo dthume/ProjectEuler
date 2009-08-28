@@ -1,8 +1,13 @@
-(ns com.westoya.euler.problems)
+(ns com.westoya.euler.problems
+  (:use [clojure.contrib.lazy-seqs :only (primes)]))
 
-(defn natural-numbers [] (iterate inc 0))
+(defn natural-numbers
+  "Generates a (fresh) lazy sequence of the natural numbers"
+  []
+  (iterate inc 0))
 
 (defn fibonacci-sequence
+  "Generates a (fresh) lazy fibonacci sequence"
   ([]
      (fibonacci-sequence 0 1))
   ([a b]
@@ -10,16 +15,40 @@
        (cons a (fibonacci-sequence b (+ a b))))))
 
 (defn problem1
+  "Add all the natural numbers below one thousand that are multiples of 3 or 5."
   []
-  (apply +
+  (reduce +
 	 (filter #(or (= 0 (mod %1 3))
 		      (= 0 (mod %1 5)))
 		 (take 1000 (natural-numbers)))))
 
 (defn problem2
+  "Find the sum of all the even-valued terms in the Fibonacci sequence which
+do not exceed four million."
   []
-  (apply +
-	 (take-while
-	  #(< % 4000000)
-	  (filter even? (fibonacci-sequence)))))
+  (reduce +
+	  (take-while #(< % 4000000)
+		      (filter even? (fibonacci-sequence)))))
 
+(defn problem3
+  "Find the largest prime factor of a composite number."
+  [n]
+  ; check 2 and 3, then only check
+  ; 6n - 1 and 6n + 1 to see if:
+  ; a) they are factors
+  ; b) they are prime
+  )
+
+(problem3 600851475143)
+
+(defn problem5
+  "What is the smallest number divisible by each of the numbers 1 to 20?"
+  []
+  (let [divs [20 19 18 17 16 15 14 13 12 11]]
+    (some
+     (fn [i]
+       (if (every? #(zero? (rem i %)) divs)
+	 i false))
+     (iterate #(+ % 20) 20))))
+
+(println (problem5))
