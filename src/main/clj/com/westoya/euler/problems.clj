@@ -93,8 +93,6 @@ number."
   (let [total (apply * (range 1 101))]
     (sum-string-digits total)))
 
-(.pow (BigInteger. "2") 1000)
-
 (comment
   
   (println (problem1))
