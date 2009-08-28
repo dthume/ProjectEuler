@@ -25,6 +25,15 @@
   [s]
   (apply + (map parse-digit (.toString s))))
 
+(defn reverse-string
+  [s]
+  (.toString (.reverse (StringBuilder. s))))
+
+(defn palindrome?
+  [s]
+  (let [s (str s)]
+    (= s (reverse-string s))))
+
 ; problem solutions
 
 (defn problem1
@@ -51,6 +60,14 @@ do not exceed four million."
   ; a) they are factors
   ; b) they are prime
   )
+
+(defn problem4
+  "Find the largest palindrome made from the product of two 3-digit numbers."
+  []
+  (let [r (range 100 1000)]
+    (reduce max
+	    (filter palindrome?
+		    (for [r1 r r2 r] (* r1 r2))))))
 
 (defn problem5
   "What is the smallest number divisible by each of the numbers 1 to 20?"
@@ -98,6 +115,7 @@ number."
   (println (problem1))
   (println (problem2))
   (println (problem3 600851475143))
+  (println (problem4))
   (println (problem5))
   (println (problem6))
   (println (problem8))
