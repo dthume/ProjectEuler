@@ -224,6 +224,19 @@ number."
 	   (map parse-digit
 		(take 10 (.toString (reduce + numbers)))))))
 
+(defn problem14
+  "Find the longest sequence using a starting number under one million."
+  []
+  (let [starting-numbers (range 1 1000000)
+	gen-sequence (fn [n]
+		       (loop [i n
+			      s (list)]
+			 (cond (= i 1) (vector (count s) n)
+			       (even? i) (recur (/ i 2) (conj s i))
+			       (odd? i) (recur (inc (* 3 i)) (conj s i)))))]
+    (second (reduce #(if (> (first %1) (first %2)) %1 %2)
+		    (map gen-sequence starting-numbers)))))
+
 (defn problem16
   "What is the sum of the digits of the number 2^1000?"
   []
@@ -249,6 +262,7 @@ number."
   (println (problem8))
   (println (problem10))
   (println (problem13))
+  (println (problem14))
   (println (problem16))
   (println (problem20))
   
