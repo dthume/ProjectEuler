@@ -1,5 +1,6 @@
 (ns com.westoya.euler.problems
-  (:use [clojure.contrib.lazy-seqs :only (primes)]))
+  (:use [clojure.contrib.lazy-seqs :only (primes)]
+	[clojure.contrib.seq-utils :only (indexed)]))
 
 ; utility functions
 
@@ -248,6 +249,14 @@ number."
   (let [total (apply * (range 1 101))]
     (sum-string-digits total)))
 
+(defn problem25
+  "What is the first term in the Fibonacci sequence to contain 1000 digits?"
+  []
+  (some #(if (= 1000 (count (.toString (second %1))))
+	   (first %1)
+	   nil)
+	(indexed (fibonacci-sequence))))
+
 (comment
 
   (set! *warn-on-reflection* true)
@@ -265,5 +274,6 @@ number."
   (println (problem14))
   (println (problem16))
   (println (problem20))
-  
+  (println (problem25))
+
 )
