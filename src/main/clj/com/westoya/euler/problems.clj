@@ -1,6 +1,7 @@
 (ns com.westoya.euler.problems
   (:use
    [clojure.contrib.combinatorics :only (lex-permutations)]
+   [clojure.contrib.duck-streams :only (read-lines)]
    [clojure.contrib.lazy-seqs :only (primes)]
    [clojure.contrib.math :only (expt)]
    [clojure.contrib.seq-utils :only (indexed)]))
@@ -37,6 +38,12 @@
   [s]
   (let [s (str s)]
     (= s (reverse-string s))))
+
+(defn read-triangle
+  [f]
+  (map #(for [n (re-seq #"[0-9]{2}" %)]
+	  (Integer/parseInt n))
+       (read-lines f)))
 
 (defn max-sum-triangle
   [triangle]
@@ -272,23 +279,8 @@ number."
 (defn problem18
   "Find the maximum sum travelling from the top of the triangle to the base."
   []
-  (let [triangle
-	[[75]
-	 [95 64]
-	 [17 47 82]
-	 [18 35 87 10]
-	 [20 4 82 47 65]
-	 [19 1 23 75 3 34]
-	 [88 2 77 73 7 63 67]
-	 [99 65 4 28 6 16 70 92]
-	 [41 41 26 56 83 40 80 70 33]
-	 [41 48 72 33 47 32 37 16 94 29]
-	 [53 71 44 65 25 43 91 52 97 51 14]
-	 [70 11 33 28 77 73 17 78 39 68 17 57]
-	 [91 71 52 38 17 14 91 43 58 50 27 29 48]
-	 [63 66 4 68 89 53 67 30 73 16 69 87 40 31]
-	 [4 62 98 27 23 9 70 98 73 93 38 53 60 4 23]]]
-    (max-sum-triangle triangle)))
+  (max-sum-triangle
+   (read-triangle "d:/gitrepo/ProjectEuler/src/main/resources/problem18.txt")))
 
 (defn problem20
   "Find the sum of digits in 100!"
@@ -317,6 +309,12 @@ number."
 	       (reduce + (map #(expt %1 %1) (range 1 1001))))]
     (apply str (drop (- (count total) 10) total))))
 
+(defn problem67
+  "Using an efficient algorithm find the maximal sum in the triangle?"
+  []
+  (max-sum-triangle
+   (read-triangle "d:/gitrepo/ProjectEuler/src/main/resources/problem67.txt")))
+
 (comment
 
   (set! *warn-on-reflection* true)
@@ -338,5 +336,6 @@ number."
   (println (problem24))
   (println (problem25))
   (println (problem48))
+  (println (problem67))
 
 )
