@@ -97,6 +97,11 @@ the sums?"
 	sumsquare (long (apply + (map square numbers)))]
     (- squaresum sumsquare)))
 
+(defn problem7
+  "Find the 10001st prime."
+  []
+  (nth primes 10000))
+
 (defn problem8
   "Discover the largest product of five consecutive digits in the 1000-digit
 number."
@@ -128,6 +133,7 @@ number."
   (println (problem4))
   (println (problem5))
   (println (problem6))
+  (println (problem7))
   (println (problem8))
   (println (problem16))
   (println (problem20))
