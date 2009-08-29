@@ -1,5 +1,6 @@
 (ns com.westoya.euler.problems
-  (:use 
+  (:use
+   [clojure.contrib.combinatorics :only (lex-permutations)]
    [clojure.contrib.lazy-seqs :only (primes)]
    [clojure.contrib.math :only (expt)]
    [clojure.contrib.seq-utils :only (indexed)]))
@@ -251,6 +252,12 @@ number."
   (let [total (apply * (range 1 101))]
     (sum-string-digits total)))
 
+(defn problem24
+  "What is the millionth lexicographic permutation of the digits
+0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?"
+  []
+  (nth (lex-permutations (range 10)) 999999))
+
 (defn problem25
   "What is the first term in the Fibonacci sequence to contain 1000 digits?"
   []
@@ -283,6 +290,7 @@ number."
   (println (problem14))
   (println (problem16))
   (println (problem20))
+  (println (problem24))
   (println (problem25))
   (println (problem48))
 
