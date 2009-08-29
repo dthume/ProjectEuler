@@ -1,6 +1,8 @@
 (ns com.westoya.euler.problems
-  (:use [clojure.contrib.lazy-seqs :only (primes)]
-	[clojure.contrib.seq-utils :only (indexed)]))
+  (:use 
+   [clojure.contrib.lazy-seqs :only (primes)]
+   [clojure.contrib.math :only (expt)]
+   [clojure.contrib.seq-utils :only (indexed)]))
 
 ; utility functions
 
@@ -257,6 +259,13 @@ number."
 	   nil)
 	(indexed (fibonacci-sequence))))
 
+(defn problem48
+  "Find the last ten digits of 11 + 22 + ... + 10001000."
+  []
+  (let [total (.toString
+	       (reduce + (map #(expt %1 %1) (range 1 1001))))]
+    (apply str (drop (- (count total) 10) total))))
+
 (comment
 
   (set! *warn-on-reflection* true)
@@ -275,5 +284,6 @@ number."
   (println (problem16))
   (println (problem20))
   (println (problem25))
+  (println (problem48))
 
 )
