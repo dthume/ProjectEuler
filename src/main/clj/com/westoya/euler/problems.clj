@@ -112,6 +112,11 @@ number."
 	    (map #(reduce sumseq 1 %)
 		 (partition 5 1 s)))))
 
+(defn problem10
+  "Calculate the sum of all the primes below two million."
+  []
+  (reduce + (take-while #(< % 2000000) primes)))
+
 (defn problem16
   "What is the sum of the digits of the number 2^1000?"
   []
@@ -135,6 +140,7 @@ number."
   (println (problem6))
   (println (problem7))
   (println (problem8))
+  (println (problem10))
   (println (problem16))
   (println (problem20))
   
