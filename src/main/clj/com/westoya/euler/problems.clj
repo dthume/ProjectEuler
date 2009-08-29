@@ -38,6 +38,29 @@
   (let [s (str s)]
     (= s (reverse-string s))))
 
+(defn max-sum-triangle
+  [triangle]
+  (loop [current-maxes (first triangle)
+	 current-row (second triangle)
+	 remaining (nnext triangle)]
+    (if (empty? current-row)
+      (reduce max current-maxes)
+      (let [last-item-index (dec (count current-row))
+	    calc-max
+	    (fn [item]
+	      (let [i (first item)
+		    v (second item)]
+		(cond
+		  (zero? i) (+ v (first current-maxes))
+		  (= last-item-index i) (+ v
+					   (nth current-maxes
+						(dec last-item-index)))
+		  true (max (+ v (nth current-maxes i))
+			    (+ v (nth current-maxes (dec i)))))))]
+	(recur (map calc-max (indexed current-row))
+	       (first remaining)
+	       (rest remaining))))))
+
 ; problem solutions
 
 (defn problem1
@@ -246,6 +269,27 @@ number."
   []
   (sum-string-digits (.pow (BigInteger. "2") 1000)))
 
+(defn problem18
+  "Find the maximum sum travelling from the top of the triangle to the base."
+  []
+  (let [triangle
+	[[75]
+	 [95 64]
+	 [17 47 82]
+	 [18 35 87 10]
+	 [20 4 82 47 65]
+	 [19 1 23 75 3 34]
+	 [88 2 77 73 7 63 67]
+	 [99 65 4 28 6 16 70 92]
+	 [41 41 26 56 83 40 80 70 33]
+	 [41 48 72 33 47 32 37 16 94 29]
+	 [53 71 44 65 25 43 91 52 97 51 14]
+	 [70 11 33 28 77 73 17 78 39 68 17 57]
+	 [91 71 52 38 17 14 91 43 58 50 27 29 48]
+	 [63 66 4 68 89 53 67 30 73 16 69 87 40 31]
+	 [4 62 98 27 23 9 70 98 73 93 38 53 60 4 23]]]
+    (max-sum-triangle triangle)))
+
 (defn problem20
   "Find the sum of digits in 100!"
   []
@@ -289,6 +333,7 @@ number."
   (println (problem13))
   (println (problem14))
   (println (problem16))
+  (println (problem18))
   (println (problem20))
   (println (problem24))
   (println (problem25))
