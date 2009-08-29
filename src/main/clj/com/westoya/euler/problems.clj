@@ -288,6 +288,16 @@ number."
   (let [total (apply * (range 1 101))]
     (sum-string-digits total)))
 
+(defn problem22
+  "What is the total of all the name scores in the file of first names?"
+  []
+  (let [f "d:/gitrepo/ProjectEuler/src/main/resources/problem22.txt"]
+    (reduce +
+	    (map (fn [s]
+		   (* (inc (first s))
+		      (reduce + (map #(- (int %) 64) (second s)))))
+		 (indexed (sort (re-seq #"[A-Za-z]+" (slurp f))))))))
+
 (defn problem24
   "What is the millionth lexicographic permutation of the digits
 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?"
@@ -333,6 +343,7 @@ number."
   (println (problem16))
   (println (problem18))
   (println (problem20))
+  (println (problem22))
   (println (problem24))
   (println (problem25))
   (println (problem48))
