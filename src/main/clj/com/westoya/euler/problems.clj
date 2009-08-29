@@ -52,14 +52,22 @@ do not exceed four million."
 	  (take-while #(< % 4000000)
 		      (filter even? (fibonacci-sequence)))))
 
+; Reading blogs about this problem was what led me to project euler,
+; by which time I'd read quite a bit about solving it.  The solution
+; below is taken directly from http://paste.lisp.org/display/83620
+; since there seemed little point in pretending I'd come up with the
+; solution on my own
 (defn problem3
   "Find the largest prime factor of a composite number."
-  [n]
-  ; check 2 and 3, then only check
-  ; 6n - 1 and 6n + 1 to see if:
-  ; a) they are factors
-  ; b) they are prime
-  )
+  []
+  (let [div-max (fn [number divisor]
+		  (if (zero? (rem number divisor))
+		    (recur (/ number divisor) divisor)
+		    number))]
+    (loop [n 600851475143 div 2]
+      (if (> div n)
+	(- div 1)
+	(recur (div-max n div) (inc div))))))
 
 (defn problem4
   "Find the largest palindrome made from the product of two 3-digit numbers."
@@ -111,10 +119,12 @@ number."
     (sum-string-digits total)))
 
 (comment
+
+  (set! *warn-on-reflection* true)
   
   (println (problem1))
   (println (problem2))
-  (println (problem3 600851475143))
+  (println (problem3))
   (println (problem4))
   (println (problem5))
   (println (problem6))
