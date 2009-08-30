@@ -31,7 +31,7 @@
 		  (vector (* (/ n 2) (inc n)) n)))
 	      [1 1])))
 
-(defn pentagonal?
+(defn pentagonal
   "Returns x if it is a pentagonal number, otherwise nil"
   [x]
   (let [n (/ (+ 1 (sqrt (+ 1 (* 24 x))))
@@ -39,7 +39,7 @@
     (when (and (pos? n) (integer? n))
       x)))
 
-(defn hexagonal?
+(defn hexagonal
   "Returns x if it is a hexagonal number, otherwise nil"
   [x]
   (let [n (/ (+ 1 (sqrt (+ 1 (* 8 x))))
@@ -286,7 +286,7 @@ base 10 and base 2."
 and hexagonal?"
   []
   (let [tri-nums (drop 285 (triangle-numbers))]
-    (some #(and (hexagonal? %1) (pentagonal? %1))
+    (some #(and (hexagonal %1) (pentagonal %1))
 	  tri-nums)))
 
 (defn problem48
