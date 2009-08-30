@@ -27,9 +27,14 @@
   [c]
   (Integer/parseInt (.toString c)))
 
+(defn digits
+  "Returns a sequence of the digits comprising n"
+  [n]
+  (map parse-digit (.toString n)))
+
 (defn sum-string-digits
-  [s]
-  (apply + (map parse-digit (.toString s))))
+  [n]
+  (apply + (digits n)))
 
 (defn reverse-string
   [s]
@@ -341,6 +346,24 @@ base 10 and base 2."
 	       (reduce + (map #(expt %1 %1) (range 1 1001))))]
     (apply str (drop (- (count total) 10) total))))
 
+(defn problem52
+  "Find the smallest positive integer, x, such that 2x, 3x, 4x,
+5x, and 6x, contain the same digits in some order."
+  []
+  (let [digit-set #(apply hash-set (digits %))
+	same-digits
+	(fn [n]
+	  (let [n-digits (digit-set n)]
+	    (if (and
+		 (= n-digits (digit-set (* 2 n)))
+		 (= n-digits (digit-set (* 3 n)))
+		 (= n-digits (digit-set (* 4 n)))
+		 (= n-digits (digit-set (* 5 n)))
+		 (= n-digits (digit-set (* 6 n))))
+	      n
+	      nil)))]
+    (some same-digits (iterate inc 1))))
+
 (defn problem53
   "How many values of C(n,r), for 1 <= n <= 100, exceed one-million?"
   []
@@ -398,6 +421,7 @@ digital sum."
   (println (problem29))
   (println (problem36))
   (println (problem48))
+  (println (problem52))
   (println (problem53))
   (println (problem56))
   (println (problem67))
