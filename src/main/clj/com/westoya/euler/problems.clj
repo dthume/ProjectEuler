@@ -53,18 +53,11 @@
 	 remaining (nnext triangle)]
     (if (empty? current-row)
       (reduce max current-maxes)
-      (let [last-item-index (dec (count current-row))
-	    calc-max
-	    (fn [item]
-	      (let [i (first item)
-		    v (second item)]
-		(cond
-		  (zero? i) (+ v (first current-maxes))
-		  (= last-item-index i) (+ v
-					   (nth current-maxes
-						(dec last-item-index)))
-		  true (max (+ v (nth current-maxes i))
-			    (+ v (nth current-maxes (dec i)))))))]
+      (let [calc-max (fn [item]
+		       (let [i (first item)
+			     v (second item)]
+			 (max (+ v (nth current-maxes i 0))
+			      (+ v (nth current-maxes (dec i) 0)))))]
 	(recur (map calc-max (indexed current-row))
 	       (first remaining)
 	       (rest remaining))))))
