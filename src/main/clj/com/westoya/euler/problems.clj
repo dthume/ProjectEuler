@@ -5,7 +5,7 @@
    [clojure.contrib.lazy-seqs :only (primes)]
    [clojure.contrib.math :only (expt)]
    [clojure.contrib.pprint :only (cl-format)]
-   [clojure.contrib.seq-utils :only (indexed)]))
+   [clojure.contrib.seq-utils :only (flatten indexed)]))
 
 ; utility functions
 
@@ -61,6 +61,16 @@
 	(recur (map calc-max (indexed current-row))
 	       (first remaining)
 	       (rest remaining))))))
+
+(defn factorial
+  [n]
+  (if (or (zero? n) (= 1 n))
+    1
+    (loop [total n
+	   i (dec n)]
+      (if (= 1 i)
+	total
+	(recur (* total i) (dec i))))))
 
 ; problem solutions
 
@@ -331,6 +341,24 @@ base 10 and base 2."
 	       (reduce + (map #(expt %1 %1) (range 1 1001))))]
     (apply str (drop (- (count total) 10) total))))
 
+(defn problem53
+  "How many values of C(n,r), for 1 <= n <= 100, exceed one-million?"
+  []
+  (let [n-range (range 1 101)
+	r-for-n (fn [n]
+		  (map #(vector n %1) (range 1 (inc n))))
+	total-combinations
+	(fn [pair]
+	  (let [n (long (first pair))
+		r (long (second pair))]
+	    (/ (factorial n)
+	       (* (factorial r)
+		  (factorial (- n r))))))]
+    (count
+     (filter #(> % 1000000)
+	     (map total-combinations
+		  (mapcat r-for-n n-range))))))
+
 (defn problem56
   "Considering natural numbers of the form, ab, finding the maximum
 digital sum."
@@ -349,7 +377,7 @@ digital sum."
 (comment
 
   (set! *warn-on-reflection* true)
-  
+
   (println (problem1))
   (println (problem2))
   (println (problem3))
@@ -370,6 +398,7 @@ digital sum."
   (println (problem29))
   (println (problem36))
   (println (problem48))
+  (println (problem53))
   (println (problem56))
   (println (problem67))
 
