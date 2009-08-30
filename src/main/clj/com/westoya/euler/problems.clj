@@ -3,7 +3,7 @@
    [clojure.contrib.combinatorics :only (lex-permutations)]
    [clojure.contrib.duck-streams :only (read-lines)]
    [clojure.contrib.lazy-seqs :only (primes)]
-   [clojure.contrib.math :only (expt sqrt)]
+   [clojure.contrib.math :only (expt sqrt ceil)]
    [clojure.contrib.pprint :only (cl-format)]
    [clojure.contrib.seq-utils :only (flatten indexed)]))
 
@@ -102,6 +102,22 @@
 	total
 	(recur (* total i) (dec i))))))
 
+(defn factors
+  "Returns the factors of n"
+  [n]
+  (cond
+    (neg? n) (throw (IllegalArgumentException. "n must be positive"))
+    (zero? n) #{0}
+    (= n 1) #{1}
+    true (let [limit (ceil (sqrt n))]
+	   (loop [facs #{1 n} current 2]
+	     (if (> current limit)
+	       facs
+	       (let [i (/ n current)]
+		 (if (integer? i)
+		   (recur (conj facs current i) (inc current))
+		   (recur facs (inc current)))))))))
+
 (defn word-score
   [s]
   (reduce + (map #(- (int %) 64) s)))
@@ -189,6 +205,13 @@ number."
   "Calculate the sum of all the primes below two million."
   []
   (reduce + (take-while #(< % 2000000) primes)))
+
+(defn problem12
+  "What is the value of the first triangle number to have over five hundred
+divisors?"
+  []
+  (some #(when (> (count (factors %1)) 500) %1)
+	(triangle-numbers)))
 
 (defn problem13
   "Find the first ten digits of the sum of one-hundred 50-digit numbers."
@@ -360,6 +383,7 @@ digital sum."
   (println (problem7))
   (println (problem8))
   (println (problem10))
+  (println (problem12))
   (println (problem13))
   (println (problem14))
   (println (problem16))
