@@ -178,7 +178,8 @@ the sums?"
   "Discover the largest product of five consecutive digits in the 1000-digit
 number."
   []
-  (let [s (slurp "d:/gitrepo/ProjectEuler/src/main/resources/problem8.txt")
+  (let [f "d:/gitrepo/ProjectEuler/src/main/resources/problem8.txt"
+	s (first (read-lines f))
 	sumseq #(* %1 (parse-digit %2))]
     (reduce max
 	    (map #(reduce sumseq 1 %)
