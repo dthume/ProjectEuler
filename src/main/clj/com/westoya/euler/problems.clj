@@ -4,6 +4,7 @@
    [clojure.contrib.duck-streams :only (read-lines)]
    [clojure.contrib.lazy-seqs :only (primes)]
    [clojure.contrib.math :only (expt)]
+   [clojure.contrib.pprint :only (cl-format)]
    [clojure.contrib.seq-utils :only (indexed)]))
 
 ; utility functions
@@ -321,6 +322,15 @@ number."
      (distinct
       (for [a r b r] (expt a b))))))
 
+(defn problem36
+  "Find the sum of all numbers less than one million, which are palindromic in
+base 10 and base 2."
+  []
+  (reduce +
+	  (filter #(and (palindrome? %1)
+			(palindrome? (cl-format nil "~b" %1)))
+		  (range 1000000))))
+
 (defn problem48
   "Find the last ten digits of 11 + 22 + ... + 10001000."
   []
@@ -356,6 +366,7 @@ number."
   (println (problem24))
   (println (problem25))
   (println (problem29))
+  (println (problem36))
   (println (problem48))
   (println (problem67))
 
