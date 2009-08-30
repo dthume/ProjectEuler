@@ -22,6 +22,15 @@
      (lazy-seq
        (cons a (fibonacci-sequence b (+ a b))))))
 
+(defn triangle-numbers
+  "Generates a (fresh) lazy sequence of triangle numbers"
+  []
+  (map first (iterate
+	      (fn [item]
+		(let [n (inc (second item))]
+		  (vector (* (/ n 2) (inc n)) n)))
+	      [1 1])))
+
 (defn parse-digit
   "Parses a digit from character c"
   [c]
@@ -76,6 +85,10 @@
       (if (= 1 i)
 	total
 	(recur (* total i) (dec i))))))
+
+(defn word-score
+  [s]
+  (reduce + (map #(- (int %) 64) s)))
 
 ; problem solutions
 
@@ -339,6 +352,16 @@ base 10 and base 2."
 			(palindrome? (cl-format nil "~b" %1)))
 		  (range 1000000))))
 
+(defn problem42
+  "How many triangle words does the list of common English words contain?"
+  []
+  (let [f "d:/gitrepo/ProjectEuler/src/main/resources/problem42.txt"
+	words (re-seq #"[A-Za-z]+" (slurp f))
+	tri-nums  (into (hash-set) (take 100 (triangle-numbers)))]
+    (count
+     (filter tri-nums
+	     (map word-score words)))))
+
 (defn problem48
   "Find the last ten digits of 11 + 22 + ... + 10001000."
   []
@@ -420,6 +443,7 @@ digital sum."
   (println (problem25))
   (println (problem29))
   (println (problem36))
+  (println (problem42))
   (println (problem48))
   (println (problem52))
   (println (problem53))
