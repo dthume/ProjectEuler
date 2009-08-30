@@ -102,11 +102,19 @@
 	total
 	(recur (* total i) (dec i))))))
 
+(defn count-distinct
+  "Returns a map whose keys are the distinct items in s, and whose values are
+the number of occurrences of each key"
+  [s]
+  (persistent!
+   (reduce (fn [m x] (assoc! m x (inc (m x 0)))) (transient {}) s)))
+
 (defn factors
   "Returns the factors of n"
   [n]
   (cond
     (neg? n) (throw (IllegalArgumentException. "n must be positive"))
+    (not (integer? n)) (throw (IllegalArgumentException. "n must be an integer"))
     (zero? n) #{0}
     (= n 1) #{1}
     true (let [limit (ceil (sqrt n))]
@@ -117,6 +125,28 @@
 		 (if (integer? i)
 		   (recur (conj facs current i) (inc current))
 		   (recur facs (inc current)))))))))
+
+(defn prime-factorisation
+  "Returns a sequence of the prime factorisation of a number"
+  [n]
+  (cond
+    (neg? n) (throw (IllegalArgumentException. "n must be positive"))
+    (not (integer? n)) (throw (IllegalArgumentException. "n must be an integer"))
+    (zero? n) #{0}
+    (= n 1) #{1}
+    true (let [limit (ceil (sqrt n))]
+	   (loop [n n
+		  facs (transient (vector))
+		  current (first primes)
+		  remaining-primes (rest primes)]
+	     (if (= n 1)
+	       (persistent! facs)
+	       (let [i (/ n current)]
+		 (if (integer? i)
+		   (recur i (conj! facs current) current remaining-primes)
+		   (recur n facs
+			  (first remaining-primes)
+			  (rest remaining-primes)))))))))
 
 (defn word-score
   [s]
@@ -210,8 +240,14 @@ number."
   "What is the value of the first triangle number to have over five hundred
 divisors?"
   []
-  (some #(when (> (count (factors %1)) 500) %1)
-	(triangle-numbers)))
+  (let [num-factors
+	(fn [n]
+	  (reduce *
+		  (map inc
+		       (vals (count-distinct (prime-factorisation n))))))]
+    (some #(when (> (num-factors %1) 500)
+	     %1)
+	  (triangle-numbers))))
 
 (defn problem13
   "Find the first ten digits of the sum of one-hundred 50-digit numbers."
