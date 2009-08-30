@@ -3,7 +3,7 @@
    [clojure.contrib.combinatorics :only (lex-permutations)]
    [clojure.contrib.duck-streams :only (read-lines)]
    [clojure.contrib.lazy-seqs :only (primes)]
-   [clojure.contrib.math :only (expt)]
+   [clojure.contrib.math :only (expt sqrt)]
    [clojure.contrib.pprint :only (cl-format)]
    [clojure.contrib.seq-utils :only (flatten indexed)]))
 
@@ -30,6 +30,22 @@
 		(let [n (inc (second item))]
 		  (vector (* (/ n 2) (inc n)) n)))
 	      [1 1])))
+
+(defn pentagonal?
+  "Returns x if it is a pentagonal number, otherwise nil"
+  [x]
+  (let [n (/ (+ 1 (sqrt (+ 1 (* 24 x))))
+	     6)]
+    (when (and (pos? n) (integer? n))
+      x)))
+
+(defn hexagonal?
+  "Returns x if it is a hexagonal number, otherwise nil"
+  [x]
+  (let [n (/ (+ 1 (sqrt (+ 1 (* 8 x))))
+	     4)]
+    (when (and (pos? n) (integer? n))
+      x)))
 
 (defn parse-digit
   "Parses a digit from character c"
@@ -362,6 +378,14 @@ base 10 and base 2."
      (filter tri-nums
 	     (map word-score words)))))
 
+(defn problem45
+  "After 40755, what is the next triangle number that is also pentagonal
+and hexagonal?"
+  []
+  (let [tri-nums (drop 285 (triangle-numbers))]
+    (some #(and (hexagonal? %1) (pentagonal? %1))
+	  tri-nums)))
+
 (defn problem48
   "Find the last ten digits of 11 + 22 + ... + 10001000."
   []
@@ -444,6 +468,7 @@ digital sum."
   (println (problem29))
   (println (problem36))
   (println (problem42))
+  (println (problem45))
   (println (problem48))
   (println (problem52))
   (println (problem53))
