@@ -331,6 +331,15 @@ base 10 and base 2."
 	       (reduce + (map #(expt %1 %1) (range 1 1001))))]
     (apply str (drop (- (count total) 10) total))))
 
+(defn problem56
+  "Considering natural numbers of the form, ab, finding the maximum
+digital sum."
+  []
+  (let [r (range 100)]
+    (reduce max
+	    (map sum-string-digits
+		 (for [a r b r] (expt a b))))))
+
 (defn problem67
   "Using an efficient algorithm find the maximal sum in the triangle?"
   []
@@ -361,6 +370,7 @@ base 10 and base 2."
   (println (problem29))
   (println (problem36))
   (println (problem48))
+  (println (problem56))
   (println (problem67))
 
 )
