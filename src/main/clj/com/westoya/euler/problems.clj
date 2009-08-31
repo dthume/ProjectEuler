@@ -381,8 +381,8 @@ and hexagonal?"
 		  (map #(vector n %1) (range 1 (inc n))))
 	total-combinations
 	(fn [pair]
-	  (let [n (long (first pair))
-		r (long (second pair))]
+	  (let [n (first pair)
+		r (second pair)]
 	    (/ (factorial n)
 	       (* (factorial r)
 		  (factorial (- n r))))))]
