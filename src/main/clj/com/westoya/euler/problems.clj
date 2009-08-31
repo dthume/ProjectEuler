@@ -377,8 +377,7 @@ and hexagonal?"
   "How many values of C(n,r), for 1 <= n <= 100, exceed one-million?"
   []
   (let [n-range (range 1 101)
-	r-for-n (fn [n]
-		  (map #(vector n %1) (range 1 (inc n))))
+	r-for-n (fn [n] (for [r (range 1 (inc n))] [n r]))
 	total-combinations
 	(fn [pair]
 	  (let [n (first pair)
