@@ -132,8 +132,8 @@ the number of occurrences of each key"
   (cond
     (neg? n) (throw (IllegalArgumentException. "n must be positive"))
     (not (integer? n)) (throw (IllegalArgumentException. "n must be an integer"))
-    (zero? n) #{0}
-    (= n 1) #{1}
+    (zero? n) [0]
+    (= n 1) [1]
     true (let [limit (ceil (sqrt n))]
 	   (loop [n n
 		  facs (transient (vector))
