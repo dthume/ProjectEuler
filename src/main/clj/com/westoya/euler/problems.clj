@@ -63,7 +63,7 @@
 
 (defn reverse-string
   [s]
-  (.toString (.reverse (StringBuilder. s))))
+  (.toString (.reverse (StringBuilder. (str s)))))
 
 (defn palindrome?
   [s]
@@ -390,6 +390,21 @@ and hexagonal?"
 	     (map total-combinations
 		  (mapcat r-for-n n-range))))))
 
+(defn problem55
+  "How many Lychrel numbers are there below ten-thousand?"
+  []
+  (let [reverse-num #(BigInteger. (reverse-string %))]
+    (count
+     (filter identity
+	     (for [n (range 10000)]
+	       (loop [n n i 50]
+		 (if (zero? i)
+		   true
+		   (let [r (+ n (reverse-num n))]
+		     (if (palindrome? r)
+		       false
+		       (recur r (dec i)))))))))))
+
 (defn problem56
   "Considering natural numbers of the form, ab, finding the maximum
 digital sum."
@@ -434,6 +449,7 @@ digital sum."
   (println (problem48))
   (println (problem52))
   (println (problem53))
+  (println (problem55))
   (println (problem56))
   (println (problem67))
 
