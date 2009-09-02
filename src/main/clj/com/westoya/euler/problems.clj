@@ -236,6 +236,14 @@ number."
   []
   (reduce + (take-while #(< % 2000000) primes)))
 
+(defn problem11
+  "What is the greatest product of four numbers on the same straight line in
+the 20 by 20 grid?"
+  []
+  (let [f "d:/gitrepo/ProjectEuler/src/main/resources/problem8.txt"
+	grid (map (fn [line] (map #(BigInteger. %) line)) (read-lines f))]
+    'TODO))
+
 (defn problem12
   "What is the value of the first triangle number to have over five hundred
 divisors?"
