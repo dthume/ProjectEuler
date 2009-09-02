@@ -240,9 +240,30 @@ number."
   "What is the greatest product of four numbers on the same straight line in
 the 20 by 20 grid?"
   []
-  (let [f "d:/gitrepo/ProjectEuler/src/main/resources/problem8.txt"
-	grid (map (fn [line] (map #(BigInteger. %) line)) (read-lines f))]
-    'TODO))
+  (let [f "d:/gitrepo/ProjectEuler/src/main/resources/problem11.txt"
+	empty (repeat 20 0)
+	grid-size (int 20)
+	grid (concat
+	      (map (fn [r]
+		     (concat (map #(BigInteger. %)(re-seq #"[0-9]+" r))
+			     [0 0 0]))
+		   (read-lines f))
+	      [empty]
+	      [empty]
+	      [empty])
+	value-at (fn [point]
+		   (nth (nth grid (first point) empty) (second point) 0))
+	sum-points #(reduce * (map value-at %))
+	lines (fn [[i j]]
+		[[[i j] [(+ i 1) j] [(+ i 2) j] [(+ i 3) j]]
+		 [[i j] [i (+ j 1)] [i (+ j 2)] [i (+ j 3)]]
+		 [[i j] [(+ i 1) (+ j 1)] [(+ i 2) (+ j 2)] [(+ i 3) (+ j 3)]]
+		 [[i j] [(- i 1) (+ j 1)] [(- i 2) (+ j 2)] [(- i 3) (+ j 3)]]])
+	points (for [i (range grid-size) j (range grid-size)] [i j])]
+
+    (reduce max
+	    (map sum-points
+		 (mapcat lines points)))))
 
 (defn problem12
   "What is the value of the first triangle number to have over five hundred
@@ -455,6 +476,7 @@ digital sum."
   (println (problem7))
   (println (problem8))
   (println (problem10))
+  (println (problem11))
   (println (problem12))
   (println (problem13))
   (println (problem14))
