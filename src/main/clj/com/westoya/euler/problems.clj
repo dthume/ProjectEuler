@@ -348,6 +348,20 @@ and hexagonal?"
     (some #(and (hexagonal %1) (pentagonal %1))
 	  tri-nums)))
 
+(defn problem47
+  "Find the first four consecutive integers to have four distinct primes factors."
+  []
+  (let [r (for [i (iterate inc 0)
+		:when (= (count (distinct (prime-factorisation i))) 4)]
+	    i)]
+    (loop [n r]
+      (let [i (first n)]
+	(if (and (= (+ i 1) (nth n 1))
+		 (= (+ i 2) (nth n 2))
+		 (= (+ i 3) (nth n 3)))
+	  i
+	  (recur (rest n)))))))
+
 (defn problem48
   "Find the last ten digits of 11 + 22 + ... + 10001000."
   []
@@ -446,6 +460,7 @@ digital sum."
   (println (problem36))
   (println (problem42))
   (println (problem45))
+  (println (problem47))
   (println (problem48))
   (println (problem52))
   (println (problem53))
