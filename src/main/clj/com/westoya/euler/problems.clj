@@ -31,6 +31,29 @@
 		  (vector (* (/ n 2) (inc n)) n)))
 	      [1 1])))
 
+(defn pascals-triangle-row
+  "Returns a sequence of the numbers in row r of Pascals Triangle"
+  ([r]
+     (letfn [(ptr-rec [r p c]
+	      (if (= c r)
+		[1]
+		(lazy-seq
+		  (let [v (if (zero? c)
+			    1
+			    (* p (/ (- (inc r) c) c)))]
+		    (cons v (ptr-rec r v (inc c)))))))]
+       (if (zero? r)
+	 [1]
+	 (lazy-seq
+	   (cons 1 (ptr-rec r 1 1)))))))
+
+(defn pascals-triangle-sequence
+  "Generates a (fresh) lazy sequence of rows of Pascals Triangle,
+starting at row 0 or row r if supplied"
+  ([] (pascals-triangle-sequence 0))
+  ([r]
+     (map pascals-triangle-row (iterate inc 0))))
+
 (defn pentagonal
   "Returns x if it is a pentagonal number, otherwise nil"
   [x]
@@ -302,6 +325,12 @@ divisors?"
     (second (reduce #(if (> (first %1) (first %2)) %1 %2)
 		    (map gen-sequence starting-numbers)))))
 
+(defn problem15
+  "Starting in the top left corner in a 20 by 20 grid, how many routes are
+there to the bottom right corner?"
+  []
+  (nth (pascals-triangle-row 40) 20))
+
 (defn problem16
   "What is the sum of the digits of the number 2^1000?"
   []
@@ -494,6 +523,7 @@ digital sum."
   (println (problem12))
   (println (problem13))
   (println (problem14))
+  (println (problem15))
   (println (problem16))
   (println (problem18))
   (println (problem20))
