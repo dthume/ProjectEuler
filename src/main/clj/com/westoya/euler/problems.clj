@@ -32,7 +32,8 @@
 	      [1 1])))
 
 (defn pascals-triangle-row
-  "Returns a sequence of the numbers in row r of Pascals Triangle"
+  "Returns a (fresh) lazy sequence of the numbers in row r of
+Pascals Triangle"
   ([r]
      (letfn [(ptr-rec [r p c]
 	      (if (= c r)
