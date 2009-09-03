@@ -263,31 +263,31 @@ number."
 the 20 by 20 grid?"
   []
   (let [f "d:/gitrepo/ProjectEuler/src/main/resources/problem11.txt"
-	grid-size (int 20)
+	grid-size 20
+	line-size 4
+	line (range line-size)
 	empty (repeat grid-size 0)
 	axis (range grid-size)
 	grid (concat
 	      (map (fn [r]
 		     (concat (map #(BigInteger. %)(re-seq #"[0-9]+" r))
-			     [0 0 0]))
+			     (repeat (dec line-size) 0)))
 		   (read-lines f))
-	      [empty]
-	      [empty]
-	      [empty])
+	      (repeat (dec line-size) empty))
 	value-at (fn [point]
 		   (nth (nth grid (first point) empty) (second point) 0))
 	reduce-line #(reduce * (map value-at %1))
-	lines-from-point
-	(fn [[i j]]
-	  [[[i j] [(+ i 1) j] [(+ i 2) j] [(+ i 3) j]]
-	   [[i j] [i (+ j 1)] [i (+ j 2)] [i (+ j 3)]]
-	   [[i j] [(+ i 1) (+ j 1)] [(+ i 2) (+ j 2)] [(+ i 3) (+ j 3)]]
-	   [[i j] [(- i 1) (+ j 1)] [(- i 2) (+ j 2)] [(- i 3) (+ j 3)]]])
+	lines-from-point (fn [[i j]]
+			   (vector
+			    (for [n line] [(+ i n) j])
+			    (for [n line] [i (+ j n)])
+			    (for [n line] [(+ i n) (+ j n)])
+			    (for [n line] [(- i n) (+ j n)])))
 	points (for [i axis j axis] [i j])]
-
+    
     (reduce max
-	    (map reduce-line
-		 (mapcat lines-from-point points)))))
+ 	    (map reduce-line
+ 		 (mapcat lines-from-point points)))))
 
 (defn problem12
   "What is the value of the first triangle number to have over five hundred
