@@ -39,9 +39,7 @@ Pascals Triangle"
 	      (if (= c r)
 		[1]
 		(lazy-seq
-		  (let [v (if (zero? c)
-			    1
-			    (* p (/ (- (inc r) c) c)))]
+		  (let [v (* p (/ (- (inc r) c) c))]
 		    (cons v (ptr-rec r v (inc c)))))))]
        (if (zero? r)
 	 [1]
