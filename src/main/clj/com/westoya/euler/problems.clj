@@ -465,6 +465,18 @@ digital sum."
   (max-sum-triangle
    (read-triangle "d:/gitrepo/ProjectEuler/src/main/resources/problem67.txt")))
 
+; I confess I googled for help on this one after my first few attempts proved
+; to be *way* too slow.  The solution here is basically a clojure implementation
+; of http://blog.dreamshire.com/2009/04/09/project-euler-problem-206-solution/
+(defn problem206
+  "Concealed Square"
+  []
+  (let [pattern #"1[0-9]2[0-9]3[0-9]4[0-9]5[0-9]6[0-9]7[0-9]8[0-9]9"]
+    (loop [n (.toBigInteger (BigDecimal. (inc (sqrt 19293949596979899))))]
+      (if (re-matches pattern (str (* n n)))
+	(* 10 n)
+	(recur (- n 2))))))
+
 (comment
 
   (set! *warn-on-reflection* true)
@@ -499,5 +511,6 @@ digital sum."
   (println (problem55))
   (println (problem56))
   (println (problem67))
+  (println (problem206))
 
 )
