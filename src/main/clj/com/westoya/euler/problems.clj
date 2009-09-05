@@ -87,14 +87,6 @@ starting at row 0 or row r if supplied"
   [s]
   (.toString (.reverse (StringBuilder. (str s)))))
 
-(defn amicable-number?
-  [n]
-  (let [sum-factors (fn [n]
-		      (reduce + (filter #(< % n) (factors n))))
-	n-sf (sum-factors n)]
-    (and (not (= n n-sf))
-	 (= n (sum-factors n-sf)))))
-
 (defn palindrome?
   [s]
   (let [s (str s)]
@@ -178,6 +170,14 @@ the number of occurrences of each key"
 		   (recur n facs
 			  (first remaining-primes)
 			  (rest remaining-primes)))))))))
+
+(defn amicable-number?
+  [n]
+  (let [sum-factors (fn [n]
+		      (reduce + (filter #(< % n) (factors n))))
+	n-sf (sum-factors n)]
+    (and (not (= n n-sf))
+	 (= n (sum-factors n-sf)))))
 
 (defn word-score
   [s]
