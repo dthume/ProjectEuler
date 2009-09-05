@@ -357,9 +357,9 @@ there to the bottom right corner?"
     (sum-string-digits total)))
 
 (defn problem21
+  "Evaluate the sum of all amicable pairs under 10000."
   []
-  (let [r (range 10000)]
-    (reduce + (filter amicable-number? (range 10000)))))
+  (reduce + (filter amicable-number? (range 10000))))
 
 (defn problem22
   "What is the total of all the name scores in the file of first names?"
