@@ -87,6 +87,14 @@ starting at row 0 or row r if supplied"
   [s]
   (.toString (.reverse (StringBuilder. (str s)))))
 
+(defn amicable-number?
+  [n]
+  (let [sum-factors (fn [n]
+		      (reduce + (filter #(< % n) (factors n))))
+	n-sf (sum-factors n)]
+    (and (not (= n n-sf))
+	 (= n (sum-factors n-sf)))))
+
 (defn palindrome?
   [s]
   (let [s (str s)]
@@ -103,6 +111,7 @@ starting at row 0 or row r if supplied"
   (loop [current-maxes (first triangle)
 	 current-row (second triangle)
 	 remaining (nnext triangle)]
+
     (if (empty? current-row)
       (reduce max current-maxes)
       (let [calc-max (fn [item]
@@ -347,6 +356,11 @@ there to the bottom right corner?"
   (let [total (apply * (range 1 101))]
     (sum-string-digits total)))
 
+(defn problem21
+  []
+  (let [r (range 10000)]
+    (reduce + (filter amicable-number? (range 10000)))))
+
 (defn problem22
   "What is the total of all the name scores in the file of first names?"
   []
@@ -526,6 +540,7 @@ digital sum."
   (println (problem16))
   (println (problem18))
   (println (problem20))
+  (println (problem21))
   (println (problem22))
   (println (problem24))
   (println (problem25))
