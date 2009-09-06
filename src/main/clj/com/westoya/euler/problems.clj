@@ -73,7 +73,7 @@ starting at row 0 or row r if supplied"
   (defn parse-digit
     "Parses a digit from character c"
     [c]
-    (if-let [d (get digit-cache c nil)]
+    (if-let [d (get digit-cache c)]
       d
       (Integer/parseInt (.toString c)))))
 
@@ -125,7 +125,7 @@ form returned by read-triangle"
 	       (rest remaining))))))
 
 (defn factorial
-  "n!"
+  "Returns the factorial of n (n!)"
   [n]
   (if (or (zero? n) (= 1 n))
     1
