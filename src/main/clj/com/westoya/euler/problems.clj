@@ -83,14 +83,17 @@ starting at row 0 or row r if supplied"
   (map parse-digit (.toString n)))
 
 (defn sum-string-digits
+  "Returns the sum of digits in n"
   [n]
   (apply + (digits n)))
 
 (defn reverse-string
+  "Reverses s"
   [s]
   (.toString (.reverse (StringBuilder. (str s)))))
 
 (defn palindrome?
+  "Returns true if the string representation of s is palindromic"
   [s]
   (let [s (str s)]
     (= s (reverse-string s))))
@@ -119,6 +122,7 @@ starting at row 0 or row r if supplied"
 	       (rest remaining))))))
 
 (defn factorial
+  "n!"
   [n]
   (if (or (zero? n) (= 1 n))
     1
@@ -129,6 +133,7 @@ starting at row 0 or row r if supplied"
 	(recur (* total i) (dec i))))))
 
 (defn sum-factorials
+  "Sum the factorials of a sequence"
   [s]
   (reduce + (map factorial s)))
 
@@ -179,6 +184,7 @@ the number of occurrences of each key"
 			  (rest remaining-primes)))))))))
 
 (defn amicable-number?
+  "Returns true if n is an amicable-number, else false"
   [n]
   (let [sum-factors (fn [n]
 		      (reduce + (filter #(< % n) (factors n))))
@@ -187,6 +193,8 @@ the number of occurrences of each key"
 	 (= n (sum-factors n-sf)))))
 
 (defn word-score
+  "Returns the word score of s, i.e. the result of summing the alphabetic
+values of the characters in s"
   [s]
   (reduce + (map #(- (int %) 64) s)))
 
