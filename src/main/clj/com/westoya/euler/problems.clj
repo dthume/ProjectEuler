@@ -99,12 +99,15 @@ starting at row 0 or row r if supplied"
     (= s (reverse-string s))))
 
 (defn read-triangle
+  "Read a number triangle from file f, of the form used by Project Euler"
   [f]
   (map #(for [n (re-seq #"[0-9]{2}" %)]
 	  (Integer/parseInt n))
        (read-lines f)))
 
 (defn max-sum-triangle
+  "Find the maximum route from top to bottom of triangle, which should be of the
+form returned by read-triangle"
   [triangle]
   (loop [current-maxes (first triangle)
 	 current-row (second triangle)
