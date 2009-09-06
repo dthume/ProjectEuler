@@ -69,10 +69,13 @@ starting at row 0 or row r if supplied"
     (when (and (pos? n) (integer? n))
       x)))
 
-(defn parse-digit
-  "Parses a digit from character c"
-  [c]
-  (Integer/parseInt (.toString c)))
+(let [digit-cache {\1 1, \2 2, \3 3, \4 4, \5 5, \6 6, \7 7, \8 8, \9 9}]
+  (defn parse-digit
+    "Parses a digit from character c"
+    [c]
+    (if-let [d (get digit-cache c nil)]
+      d
+      (Integer/parseInt (.toString c)))))
 
 (defn digits
   "Returns a sequence of the digits comprising n"
