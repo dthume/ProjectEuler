@@ -4,7 +4,7 @@
    [clojure.contrib.duck-streams :only (read-lines)]
    [clojure.contrib.lazy-seqs :only (primes)]
    [clojure.contrib.math :only (expt sqrt ceil)]
-   [clojure.contrib.pprint :only (cl-format)]
+   [clojure.contrib.pprint :only (cl-format pprint)]
    [clojure.contrib.seq-utils :only (flatten indexed)]))
 
 ; utility functions
@@ -124,6 +124,10 @@ starting at row 0 or row r if supplied"
       (if (= 1 i)
 	total
 	(recur (* total i) (dec i))))))
+
+(defn sum-factorials
+  [s]
+  (reduce + (map factorial s)))
 
 (defn count-distinct
   "Returns a map whose keys are the distinct items in s, and whose values are
@@ -407,6 +411,24 @@ there to the bottom right corner?"
      (distinct
       (for [a r b r] (expt a b))))))
 
+; Note: googling for "factorions" indicated that there were only 4:
+; 1, 2, 145 and 40585, which made the rest easy without any code at all.
+; The solution below is a brute force attempt, and runs well outside of
+; the preferred 1 minute. 
+(defn problem34
+  "Find the sum of all numbers which are equal to the sum of the factorial of
+their digits."
+  []
+  (let [target (int 2540160)]
+    (reduce +
+	    (loop [current (int 3)
+		   found (transient [])]
+	      (if (> current target)
+		(persistent! found)
+		(if (= current (int (sum-factorials (digits current))))
+		  (recur (inc current) (conj! found current))
+		  (recur (inc current) found)))))))
+
 (defn problem36
   "Find the sum of all numbers less than one million, which are palindromic in
 base 10 and base 2."
@@ -559,6 +581,7 @@ digital sum."
   (println (problem25))
   (println (problem28))
   (println (problem29))
+  (println (problem34))
   (println (problem36))
   (println (problem42))
   (println (problem45))
