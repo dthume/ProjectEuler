@@ -114,7 +114,7 @@ the number of occurrences of each key"
     (= n 1) [1]
     true (let [limit (ceil (sqrt n))]
 	   (loop [n n
-		  facs (transient (vector))
+		  facs (transient [])
 		  current (first primes)
 		  remaining-primes (rest primes)]
 	     (if (= n 1)
@@ -451,7 +451,7 @@ base 10 and base 2."
   []
   (let [f "d:/gitrepo/ProjectEuler/src/main/resources/problem42.txt"
 	words (re-seq #"[A-Za-z]+" (slurp f))
-	tri-nums  (into (hash-set) (take 100 (triangle-numbers)))]
+	tri-nums  (into #{} (take 100 (triangle-numbers)))]
     (count
      (filter tri-nums
 	     (map word-score words)))))
