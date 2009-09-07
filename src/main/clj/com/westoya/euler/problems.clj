@@ -362,6 +362,24 @@ there to the bottom right corner?"
   []
   (sum-string-digits (.pow (BigInteger. "2") 1000)))
 
+(defn problem17
+  "How many letters would be needed to write all the numbers in words from
+1 to 1000?"
+  []
+  (let [to-words #(cl-format nil "~r" %)
+	remove-punc #(.replaceAll % "[,\\s-]" "")
+	add-and (fn [s n]
+		  (if (and (> n 100) (not (zero? (mod n 100))))
+		    (str s "AND")
+		    s))
+	transform-n #(-> %1 to-words remove-punc (add-and %1))
+	total (int 1001)]
+    (loop [i (int 1)
+	   buf (StringBuilder.)]
+      (if (= i total)
+	(.length (.toString buf))
+	(recur (inc i) (.append buf (transform-n i)))))))
+
 (defn problem18
   "Find the maximum sum travelling from the top of the triangle to the base."
   []
@@ -587,6 +605,7 @@ digital sum."
   (println (problem14))
   (println (problem15))
   (println (problem16))
+  (println (problem17))
   (println (problem18))
   (println (problem20))
   (println (problem21))
