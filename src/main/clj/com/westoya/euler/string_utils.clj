@@ -19,6 +19,11 @@
   [n]
   (map parse-digit (.toString n)))
 
+(defn sum-string-digits
+  "Returns the sum of digits in n"
+  [n]
+  (apply + (digits n)))
+
 (defn reverse-string
   "Reverses s"
   [s]
