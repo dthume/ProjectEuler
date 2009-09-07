@@ -7,7 +7,7 @@
    [clojure.contrib.lazy-seqs :only (primes)]
    [clojure.contrib.math :only (expt sqrt ceil)]
    [clojure.contrib.pprint :only (cl-format pprint)]
-   [clojure.contrib.seq-utils :only (flatten indexed)]
+   [clojure.contrib.seq-utils :only (flatten indexed rotations)]
 
    [com.westoya.euler.string-utils
     :only (char-map parse-digit digits palindrome? reverse-string)]
@@ -427,6 +427,16 @@ their digits."
 		  (recur (inc current) (conj! found current))
 		  (recur (inc current) found)))))))
 
+(defn problem35
+  "How many circular primes are there below one million?"
+  []
+  (let [p-range (into #{} (take-while #(< % 1000000) primes))
+	parse-num-seq #(Integer/parseInt (apply str %))
+	circular-prime? (fn [p]
+			  (every? p-range
+				  (map parse-num-seq (rotations (digits p)))))]
+    (count (filter circular-prime? p-range))))
+
 (defn problem36
   "Find the sum of all numbers less than one million, which are palindromic in
 base 10 and base 2."
@@ -584,6 +594,7 @@ digital sum."
   (println (problem29))
   (println (problem30))
   (println (problem34))
+  (println (problem35))
   (println (problem36))
   (println (problem42))
   (println (problem45))
