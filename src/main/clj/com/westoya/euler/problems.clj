@@ -7,53 +7,15 @@
    [clojure.contrib.lazy-seqs :only (primes)]
    [clojure.contrib.math :only (expt sqrt ceil)]
    [clojure.contrib.pprint :only (cl-format pprint)]
-   [clojure.contrib.seq-utils :only (flatten indexed)]))
+   [clojure.contrib.seq-utils :only (flatten indexed)]
+
+   [com.westoya.euler.string-utils
+    :only (char-map parse-digit digits palindrome? reverse-string)]
+   [com.westoya.euler.lazy-seqs
+    :only (natural-numbers fibonacci-sequence triangle-numbers
+	   pascals-triangle-row pascals-triangle-sequence)]))
 
 ; utility functions
-
-(defn natural-numbers
-  "Generates a (fresh) lazy sequence of the natural numbers"
-  []
-  (iterate inc 0))
-
-(defn fibonacci-sequence
-  "Generates a (fresh) lazy fibonacci sequence"
-  ([]
-     (fibonacci-sequence 0 1))
-  ([a b]
-     (lazy-seq
-       (cons a (fibonacci-sequence b (+ a b))))))
-
-(defn triangle-numbers
-  "Generates a (fresh) lazy sequence of triangle numbers"
-  []
-  (map first (iterate
-	      (fn [item]
-		(let [n (inc (second item))]
-		  (vector (* (/ n 2) (inc n)) n)))
-	      [1 1])))
-
-(defn pascals-triangle-row
-  "Returns a (fresh) lazy sequence of the numbers in row r of
-Pascals Triangle"
-  ([r]
-     (letfn [(ptr-rec [r p c]
-	      (if (= c r)
-		[1]
-		(lazy-seq
-		  (let [v (* p (/ (- (inc r) c) c))]
-		    (cons v (ptr-rec r v (inc c)))))))]
-       (if (zero? r)
-	 [1]
-	 (lazy-seq
-	   (cons 1 (ptr-rec r 1 1)))))))
-
-(defn pascals-triangle-sequence
-  "Generates a (fresh) lazy sequence of rows of Pascals Triangle,
-starting at row 0 or row r if supplied"
-  ([] (pascals-triangle-sequence 0))
-  ([r]
-     (map pascals-triangle-row (iterate inc 0))))
 
 (defn pentagonal
   "Returns x if it is a pentagonal number, otherwise nil"
@@ -71,34 +33,10 @@ starting at row 0 or row r if supplied"
     (when (and (pos? n) (integer? n))
       x)))
 
-(let [digit-cache {\0 0, \1 1, \2 2, \3 3, \4 4, \5 5, \6 6, \7 7, \8 8, \9 9}]
-  (defn parse-digit
-    "Parses a digit from character c"
-    [c]
-    (if-let [d (get digit-cache c)]
-      d
-      (Integer/parseInt (.toString c)))))
-
-(defn digits
-  "Returns a sequence of the digits comprising n"
-  [n]
-  (map parse-digit (.toString n)))
-
 (defn sum-string-digits
   "Returns the sum of digits in n"
   [n]
   (apply + (digits n)))
-
-(defn reverse-string
-  "Reverses s"
-  [s]
-  (.toString (.reverse (StringBuilder. (str s)))))
-
-(defn palindrome?
-  "Returns true if the string representation of s is palindromic"
-  [s]
-  (let [s (str s)]
-    (= s (reverse-string s))))
 
 (defn read-triangle
   "Read a number triangle from file f, of the form used by Project Euler"
@@ -615,8 +553,9 @@ digital sum."
 	(recur (- n 2))))))
 
 (comment
-
-  (set! *warn-on-reflection* true)
+  (do
+    (set! *warn-on-reflection* true)
+    (add-classpath "file:D:/gitrepo/ProjectEuler/src/main/clj/"))
 
   (println (problem1))
   (println (problem2))
