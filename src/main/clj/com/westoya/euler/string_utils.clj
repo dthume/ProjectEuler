@@ -1,11 +1,13 @@
 (ns com.westoya.euler.string-utils)
 
 (defn char-map
-  ""
+  "Creates a map from each char c in s to (f c)"
   [s f]
   (into {} (map #(vector %1 (f %1)) s)))
 
-(def *digit-cache* {\0 0, \1 1, \2 2, \3 3, \4 4, \5 5, \6 6, \7 7, \8 8, \9 9})
+(def *digit-cache*
+     (char-map "0123456789"
+	       #(Integer/parseInt (.toString %))))
 
 (defn parse-digit
   "Parses a digit from character c"
