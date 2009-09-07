@@ -1,4 +1,6 @@
 (ns com.westoya.euler.problems
+  (:import
+   [java.util Calendar Date])
   (:use
    [clojure.contrib.combinatorics :only (lex-permutations)]
    [clojure.contrib.duck-streams :only (read-lines)]
@@ -386,6 +388,20 @@ there to the bottom right corner?"
   (max-sum-triangle
    (read-triangle "d:/gitrepo/ProjectEuler/src/main/resources/problem18.txt")))
 
+(defn problem19
+  "How many Sundays fell on the first of the month during the twentieth century?"
+  []
+  (let [target (doto (Calendar/getInstance)
+		 (.set 2000 11 31 0 0))]
+    (loop [cal (doto (Calendar/getInstance)
+		 (.set 1901 0 1 0 0))
+	   total 0]
+      (if (.after cal target)
+	total
+	(let [increment (if (= Calendar/SUNDAY (.get cal Calendar/DAY_OF_WEEK))
+			  1 0)]
+	  (recur (doto cal (.add Calendar/MONTH 1)) (+ total increment)))))))
+
 (defn problem20
   "Find the sum of digits in 100!"
   []
@@ -607,6 +623,7 @@ digital sum."
   (println (problem16))
   (println (problem17))
   (println (problem18))
+  (println (problem19))
   (println (problem20))
   (println (problem21))
   (println (problem22))
