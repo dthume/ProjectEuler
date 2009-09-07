@@ -459,6 +459,18 @@ there to the bottom right corner?"
      (distinct
       (for [a r b r] (expt a b))))))
 
+(defn problem30
+  "Find the sum of all the numbers that can be written as the sum of fifth
+powers of their digits."
+  []
+  (let [digit-map {\0 0,    \1 1,    \2 32,    \3 243,   \4 1024,
+		   \5 3125, \6 7776, \7 16807, \8 32768, \9 59049}
+	parse-digit-expt #(get digit-map %)
+	sum-number #(reduce + (map parse-digit-expt (.toString %)))]
+    (reduce +
+	    (filter #(= %1 (sum-number %1))
+		    (range 2 354294)))))
+
 ; Note: googling for "factorions" indicated that there were only 4:
 ; 1, 2, 145 and 40585, which made the rest easy without any code at all.
 ; The solution below is a brute force attempt, and runs well outside of
@@ -631,6 +643,7 @@ digital sum."
   (println (problem25))
   (println (problem28))
   (println (problem29))
+  (println (problem30))
   (println (problem34))
   (println (problem36))
   (println (problem42))
