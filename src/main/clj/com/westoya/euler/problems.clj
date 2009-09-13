@@ -275,6 +275,7 @@ there to the bottom right corner?"
 	(indexed (fibonacci-sequence))))
 
 (defn problem27
+  "Find a quadratic formula that produces the maximum number of primes for consecutive values of n."
   []
   (let [prime-cache primes
 	is-prime (memoize (fn [n]
