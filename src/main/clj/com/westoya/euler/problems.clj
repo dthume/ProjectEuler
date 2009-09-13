@@ -274,6 +274,31 @@ there to the bottom right corner?"
 	   nil)
 	(indexed (fibonacci-sequence))))
 
+(defn problem27
+  []
+  (let [prime-cache primes
+	is-prime (memoize (fn [n]
+			    (loop [c (first prime-cache)
+				   p (rest prime-cache)]
+			      (cond
+			       (= n c) true
+			       (< n c) false
+			       true (recur (first p) (rest p))))))
+	n-range (iterate inc 0)
+	a-range (range -999 1000)
+	b-range (range -999 1000)
+	ab (for [a a-range b b-range] [a b])
+	count-primes (fn [[a b]]
+		       (loop [n (first n-range) ns (rest n-range)
+			      c 0]
+			 (if (not (is-prime (+ (* n n) (* n a) b)))
+			   [c [a b]]
+			   (recur (first ns) (rest ns) (inc c)))))]
+    (apply *
+	   (second 
+	    (reduce #(if (> (first %1) (first %2)) %1 %2)
+		    (map count-primes ab))))))
+
 (defn problem28
  "What is the sum of both diagonals in a 1001 by 1001 spiral?"
  []
@@ -489,6 +514,7 @@ digital sum."
   (println (problem22))
   (println (problem24))
   (println (problem25))
+  (println (problem27))
   (println (problem28))
   (println (problem29))
   (println (problem30))
