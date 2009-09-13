@@ -140,8 +140,7 @@ the 20 by 20 grid?"
 			     (repeat (dec line-size) 0)))
 		   (read-lines f))
 	      (repeat (dec line-size) empty))
-	value-at (fn [point]
-		   (nth (nth grid (first point) empty) (second point) 0))
+	value-at (fn [[i j]] (nth (nth grid i empty) j 0))
 	reduce-line #(reduce * (map value-at %1))
 	lines-from-point (fn [[i j]]
 			   (vector
