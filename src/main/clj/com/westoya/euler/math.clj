@@ -59,6 +59,16 @@ the number of occurrences of each key"
 		   (recur (conj facs current i) (inc current))
 		   (recur facs (inc current)))))))))
 
+(defn proper-divisors
+  "Returns the proper divisors of n"
+  [n]
+  (disj (factors n) n))
+
+(defn abundant-numbers
+  []
+  (filter #(> (reduce + (proper-divisors %1)) %1)
+	  (iterate inc 1)))
+
 (defn prime-factorisation
   "Returns a sequence of the prime factorisation of a number"
   [n]

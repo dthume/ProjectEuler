@@ -260,6 +260,17 @@ there to the bottom right corner?"
 		      (reduce + (map #(- (int %) 64) (second s)))))
 		 (indexed (sort (re-seq #"[A-Za-z]+" (slurp f))))))))
 
+(defn problem23
+  ""
+  []
+  (let [abundant-list (abundant-numbers)
+	abundant-table (into #{} (take-while #(< % 28150) abundant-list))
+	source-numbers (take-while #(< % 28124) (iterate inc 24))
+	nas (fn [n]
+	      (not (some abundant-table
+			 (map #(- n %1) (take-while #(< %1 n) abundant-list)))))]
+    (reduce + (filter nas source-numbers))))
+
 (defn problem24
   "What is the millionth lexicographic permutation of the digits
 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?"
