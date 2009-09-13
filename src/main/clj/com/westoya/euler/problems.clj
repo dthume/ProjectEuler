@@ -370,6 +370,12 @@ base 10 and base 2."
 			(palindrome? (cl-format nil "~b" %1)))
 		  (range 1000000))))
 
+(defn problem40
+  "Finding the nth digit of the fractional part of the irrational number."
+  []
+  (let [n (mapcat digits (rest (natural-numbers)))]
+    (reduce * (map #(nth n %) [0 9 99 999 9999 99999 999999]))))
+
 (defn problem42
   "How many triangle words does the list of common English words contain?"
   []
@@ -521,6 +527,7 @@ digital sum."
   (println (problem34))
   (println (problem35))
   (println (problem36))
+  (println (problem40))
   (println (problem42))
   (println (problem45))
   (println (problem47))
