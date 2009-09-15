@@ -5,7 +5,7 @@
    [clojure.contrib.combinatorics :only (lex-permutations)]
    [clojure.contrib.duck-streams :only (read-lines)]
    [clojure.contrib.lazy-seqs :only (primes)]
-   [clojure.contrib.math :only (expt sqrt ceil)]
+   [clojure.contrib.math :only (expt sqrt ceil floor)]
    [clojure.contrib.pprint :only (cl-format pprint)]
    [clojure.contrib.seq-utils :only (flatten indexed rotations)]
    [com.westoya.euler.lazy-seqs]
@@ -332,6 +332,24 @@ powers of their digits."
     (reduce +
 	    (filter #(= %1 (sum-number %1))
 		    (range 2 354294)))))
+
+(defn problem31
+  ""
+  ([]
+     (problem31 #{1 2 5 10 20 50 100 200} 200))
+  ([coins target]
+     (cond
+       (zero? target) 1
+       (neg? target) 0
+       (empty? coins) 0
+       true (let [m (reduce max coins)
+		  rm (disj coins m)
+		  c (floor (/ target m))]
+	      (reduce +
+		      (for [i (range (inc c))]
+			(problem31 rm (- target (* c i)))))))))
+
+;(println (problem31))
 
 ; Note: googling for "factorions" indicated that there were only 4:
 ; 1, 2, 145 and 40585, which made the rest easy without any code at all.
