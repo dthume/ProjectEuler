@@ -261,11 +261,12 @@ there to the bottom right corner?"
 		 (indexed (sort (re-seq #"[A-Za-z]+" (slurp f))))))))
 
 (defn problem23
-  ""
+  "Find the sum of all the positive integers which cannot be written as the sum of two
+abundant numbers."
   []
   (let [abundant-list (abundant-numbers)
 	abundant-table (into #{} (take-while #(< % 28150) abundant-list))
-	source-numbers (take-while #(< % 28124) (iterate inc 24))
+	source-numbers (take-while #(< % 28124) (iterate inc 1))
 	nas (fn [n]
 	      (not (some abundant-table
 			 (map #(- n %1) (take-while #(< %1 n) abundant-list)))))]
@@ -523,6 +524,7 @@ digital sum."
   (println (problem20))
   (println (problem21))
   (println (problem22))
+  (println (problem23))
   (println (problem24))
   (println (problem25))
   (println (problem27))
