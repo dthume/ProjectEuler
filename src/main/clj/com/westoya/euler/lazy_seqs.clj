@@ -44,3 +44,25 @@ starting at row 0 or row r if supplied"
   ([r]
      (map pascals-triangle-row (iterate inc 0))))
 
+(defn left-truncations
+  "Returns a lazy sequence of the left truncations of s, i.e.
+s, (rest s), (rest (rest s)) etc."
+  [s]
+  (if-let [s (seq s)]
+    (lazy-seq (cons s (left-truncations (rest s))))))
+
+(defn right-truncations
+  "Returns a lazy sequence of the right truncations of s, i.e.
+s, (butlast s), (butlast (butlast s)) etc. Note that the use
+of butlast means that the second item in this sequence will
+cause s itself to be fully realised"
+  [s]
+  (if-let [s (seq s)]
+    (lazy-seq (cons s (right-truncations (butlast s))))))
+
+(defn truncations
+  "Returns a lazy sequence of the distinct left and right
+truncations of s"
+  [s]
+  (distinct
+   (lazy-cat (left-truncations s) (right-truncations s))))

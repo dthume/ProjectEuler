@@ -398,6 +398,29 @@ base 10 and base 2."
 			(palindrome? (cl-format nil "~b" %1)))
 		  (range 1000000))))
 
+(defn problem37
+  "Find the sum of all eleven primes that are both truncatable from left to
+right and right to left."
+  []
+  (let [target (int 11)
+	truncs (fn [n]
+		 (map #(Integer/parseInt (apply str %))
+		      (truncations (digits n))))]
+    (reduce +
+	    (loop [ps (drop 4 primes)
+		   prime-set #{2 3 5 7}
+		   found (int 0)
+		   found-set #{}]
+	      (let [p (first ps)
+		    prime-set (conj prime-set p)]
+		(if (every? prime-set (truncs p))
+		  (let [found (inc found)
+			found-set (conj found-set p)]
+		    (if (= found target)
+		      found-set
+		      (recur (rest ps) prime-set found found-set)))
+		  (recur (rest ps) prime-set found found-set)))))))
+
 (defn problem40
   "Finding the nth digit of the fractional part of the irrational number."
   []
@@ -557,6 +580,7 @@ digital sum."
   (println (problem34))
   (println (problem35))
   (println (problem36))
+  (println (problem37))
   (println (problem40))
   (println (problem42))
   (println (problem45))
