@@ -353,8 +353,7 @@ powers of their digits."
   ([coins target]
      (cond
        (zero? target) 1
-       (neg? target) 0
-       (empty? coins) 0
+       (or (neg? target) (empty? coins)) 0
        true (let [m (reduce max coins)
 		  rm (disj coins m)
 		  c (floor (/ target m))]
