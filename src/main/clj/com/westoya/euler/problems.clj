@@ -345,7 +345,7 @@ powers of their digits."
 	    (filter #(= %1 (sum-number %1))
 		    (range 2 354294)))))
 
-; this solution won't work for too large targets (non tail-recursive recursion)
+; this solution won't work for too large targets (non tail-recursive)
 (defn problem31
   "Investigating combinations of English currency denominations."
   ([]
@@ -403,23 +403,23 @@ base 10 and base 2."
 right and right to left."
   []
   (let [target (int 11)
-	truncs (fn [n]
-		 (map #(Integer/parseInt (apply str %))
-		      (truncations (digits n))))]
-    (reduce +
-	    (loop [ps (drop 4 primes)
-		   prime-set #{2 3 5 7}
-		   found (int 0)
-		   found-set #{}]
-	      (let [p (first ps)
-		    prime-set (conj prime-set p)]
-		(if (every? prime-set (truncs p))
-		  (let [found (inc found)
-			found-set (conj found-set p)]
-		    (if (= found target)
-		      found-set
-		      (recur (rest ps) prime-set found found-set)))
-		  (recur (rest ps) prime-set found found-set)))))))
+	int-truncations (fn [n]
+			  (map #(Integer/parseInt (apply str %))
+			       (truncations (digits n))))
+	truncatable-primes (loop [ps (drop 4 primes)
+				  prime-set #{2 3 5 7}
+				  found (int 0)
+				  found-set #{}]
+			     (let [p (first ps)
+				   prime-set (conj prime-set p)]
+			       (if (every? prime-set (int-truncations p))
+				 (let [found (inc found)
+				       found-set (conj found-set p)]
+				   (if (= found target)
+				     found-set
+				     (recur (rest ps) prime-set found found-set)))
+				 (recur (rest ps) prime-set found found-set))))]
+    (reduce + truncatable-primes)))
 
 (defn problem40
   "Finding the nth digit of the fractional part of the irrational number."
