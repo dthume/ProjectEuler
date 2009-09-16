@@ -345,8 +345,9 @@ powers of their digits."
 	    (filter #(= %1 (sum-number %1))
 		    (range 2 354294)))))
 
+; this solution won't work for too large targets (non tail-recursive recursion)
 (defn problem31
-  ""
+  "Investigating combinations of English currency denominations."
   ([]
      (problem31 #{1 2 5 10 20 50 100 200} 200))
   ([coins target]
@@ -359,9 +360,7 @@ powers of their digits."
 		  c (floor (/ target m))]
 	      (reduce +
 		      (for [i (range (inc c))]
-			(problem31 rm (- target (* c i)))))))))
-
-;(println (problem31))
+			(problem31 rm (- target (* i m)))))))))
 
 ; Note: googling for "factorions" indicated that there were only 4:
 ; 1, 2, 145 and 40585, which made the rest easy without any code at all.
@@ -555,6 +554,7 @@ digital sum."
   (println (problem28))
   (println (problem29))
   (println (problem30))
+  (println (problem31))
   (println (problem34))
   (println (problem35))
   (println (problem36))
