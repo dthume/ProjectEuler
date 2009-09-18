@@ -462,9 +462,8 @@ and hexagonal?"
 (defn problem48
   "Find the last ten digits of 11 + 22 + ... + 10001000."
   []
-  (let [total (.toString
-	       (reduce + (map #(expt %1 %1) (range 1 1001))))]
-    (apply str (drop (- (count total) 10) total))))
+  (let [total (reduce + (map #(expt %1 %1) (range 1 1001)))]
+    (mod total (expt 10 10))))
 
 (defn problem52
   "Find the smallest positive integer, x, such that 2x, 3x, 4x,
