@@ -531,6 +531,11 @@ digital sum."
   (max-sum-triangle
    (read-triangle "d:/gitrepo/ProjectEuler/src/main/resources/problem67.txt")))
 
+(defn problem97
+  "Find the last ten digits of the non-Mersenne prime: 28433 * 27830457 + 1."
+  []
+  (mod (inc (* 28433 (bit-shift-left 1 7830457))) (expt 10 10)))
+
 ; I confess I googled for help on this one after my first few attempts proved
 ; to be *way* too slow.  The solution here is basically a clojure implementation
 ; of http://blog.dreamshire.com/2009/04/09/project-euler-problem-206-solution/
@@ -591,6 +596,7 @@ digital sum."
   (println (problem55))
   (println (problem56))
   (println (problem67))
+  (println (problem97))
   (println (problem206))
 
 )
