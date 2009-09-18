@@ -1,7 +1,8 @@
 (ns com.westoya.euler.math
   (:use
    [clojure.contrib.lazy-seqs :only (primes)]
-   [clojure.contrib.math :only (ceil sqrt)]))
+   [clojure.contrib.math :only (ceil sqrt)]
+   [com.westoya.euler.string-utils :only (digits)]))
 
 (defn pentagonal
   "Returns x if it is a pentagonal number, otherwise nil"
@@ -29,6 +30,17 @@
       (if (= 1 i)
 	total
 	(recur (* total i) (dec i))))))
+
+(let [cache (into [] (map #(into #{} (range 1 (inc %)))
+			  (range 10)))]
+  (defn pandigital
+    "Returns n if it is pandigital, otherwise nil"
+    [n]
+    (let [d (digits n)
+	  c (nth cache (count d) nil)]
+      (when (and (not (nil? c))
+		 (empty? (apply disj c d)))
+	n))))
 
 (defn sum-factorials
   "Sum the factorials of a sequence"

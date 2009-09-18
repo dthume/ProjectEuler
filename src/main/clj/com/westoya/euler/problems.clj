@@ -421,6 +421,21 @@ right and right to left."
 				 (recur (rest ps) prime-set found found-set))))]
     (reduce + truncatable-primes)))
 
+(defn problem38
+  "What is the largest 1 to 9 pandigital that can be formed by multiplying a fixed number
+by 1, 2, 3, ... ?"
+  []
+  (let [; everything above 10000 can't have n > 1
+	i-range (take 10000 (iterate inc 1))
+	p-c-p (fn [i]
+		(loop [c (Long/parseLong (str i (* i 2)))
+		       n (iterate inc 3)]
+		  (cond
+		    (< c 123456789) (recur (Long/parseLong (str c (* i (first n)))) (rest n))
+		    (> c 987654321) nil
+		    true (pandigital c))))]
+    (reduce max (filter identity (map p-c-p i-range)))))
+
 (defn problem40
   "Finding the nth digit of the fractional part of the irrational number."
   []
@@ -585,6 +600,7 @@ digital sum."
   (println (problem35))
   (println (problem36))
   (println (problem37))
+  (println (problem38))
   (println (problem40))
   (println (problem42))
   (println (problem45))
