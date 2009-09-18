@@ -442,6 +442,17 @@ by 1, 2, 3, ... ?"
   (let [n (mapcat digits (rest (natural-numbers)))]
     (reduce * (map #(nth n %) [0 9 99 999 9999 99999 999999]))))
 
+; we don't need to consider anything but 4 and 7 digit numbers
+; since all other pandigitals would violate the division rule for 3
+; (if the sum of all digits in n divisible by 3, then n is divisible by 3
+(defn problem41
+  "What is the largest n-digit pandigital prime that exists?"
+  []
+  (reduce max
+	  (filter pandigital
+		  (filter #(and (> %1 1234567) (< %1 7654321))
+			  (drop 95349 (take 700000 primes))))))
+
 (defn problem42
   "How many triangle words does the list of common English words contain?"
   []
@@ -602,6 +613,7 @@ digital sum."
   (println (problem37))
   (println (problem38))
   (println (problem40))
+  (println (problem41))
   (println (problem42))
   (println (problem45))
   (println (problem47))
