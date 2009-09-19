@@ -2,7 +2,7 @@
   (:import
    [java.util Calendar Date])
   (:use
-   [clojure.contrib.combinatorics :only (lex-permutations)]
+   [clojure.contrib.combinatorics :only (lex-permutations permutations)]
    [clojure.contrib.duck-streams :only (read-lines)]
    [clojure.contrib.lazy-seqs :only (primes)]
    [clojure.contrib.math :only (expt sqrt ceil floor)]
@@ -463,6 +463,24 @@ by 1, 2, 3, ... ?"
      (filter tri-nums
 	     (map word-score words)))))
 
+(defn problem43
+  "Find the sum of all pandigital numbers with an unusual sub-string
+divisibility property."
+  []
+  (let [parse-long #(Long/parseLong (apply str %))
+	pandigitals (permutations (range 10))
+	divisors [2 3 5 7 11 13 17]
+	evenly-divisible? (fn [a b] (zero? (mod a b)))
+	has-substring-divisors
+	(fn [n]
+	  (every? identity
+		  (map evenly-divisible?
+		       (rest (map parse-long (partition 3 1 n)))
+		       divisors)))]
+    (reduce +
+	    (map parse-long
+		 (filter has-substring-divisors pandigitals)))))
+
 (defn problem45
   "After 40755, what is the next triangle number that is also pentagonal
 and hexagonal?"
@@ -615,6 +633,7 @@ digital sum."
   (println (problem40))
   (println (problem41))
   (println (problem42))
+  (println (problem43))
   (println (problem45))
   (println (problem47))
   (println (problem48))
