@@ -578,7 +578,7 @@ digital sum."
   "Find the last ten digits of the non-Mersenne prime: 28433 * 2^7830457 + 1."
   []
   ; we can do powers of two by shifting bits
-  (let [twopower (big-shift-left 1 7830457)]
+  (let [twopower (bit-shift-left 1 7830457)]
     (mod (inc (* 28433 twopower)) (expt 10 10))))
 
 ; I confess I googled for help on this one after my first few attempts proved
