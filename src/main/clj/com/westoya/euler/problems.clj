@@ -574,6 +574,32 @@ digital sum."
   (max-sum-triangle
    (read-triangle "d:/gitrepo/ProjectEuler/src/main/resources/problem67.txt")))
 
+(defn problem92
+  "Investigating a square digits number chain with a surprising property."
+  [target]
+  (let [sqr #(* %1 %1)
+	digit-cache (char-map "0123456789" #(sqr (Integer/parseInt (.toString %))))
+	square-digits #(map digit-cache (.toString %))
+	sum-square-digits #(reduce + (square-digits %))]
+    (loop [r (range 1 10000000)
+	   c 0
+	   cycle-cache (transient {1 1, 89 89})]
+      (if (empty? r)
+	c
+	(let [[f digs] (loop [n (first r)
+			      found (hash-set)]
+			 (if-let [d (get cycle-cache n nil)]
+			   [d found]
+			   (cond
+			     (contains? found n) [n found]
+			     true (recur (sum-square-digits n) (conj found n)))))]
+	  (recur (rest r)
+		 (if (= 89 f) (inc c) c)
+		 (loop [cc cycle-cache
+			d digs]
+		   (if (empty? d) cc
+		       (recur (assoc! cc (first d) f) (rest d))))))))))
+
 (defn problem97
   "Find the last ten digits of the non-Mersenne prime: 28433 * 2^7830457 + 1."
   []
@@ -644,6 +670,7 @@ digital sum."
   (println (problem55))
   (println (problem56))
   (println (problem67))
+  (println (problem92))
   (println (problem97))
   (println (problem206))
 
