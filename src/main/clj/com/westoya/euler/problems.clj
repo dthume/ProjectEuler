@@ -575,9 +575,11 @@ digital sum."
    (read-triangle "d:/gitrepo/ProjectEuler/src/main/resources/problem67.txt")))
 
 (defn problem97
-  "Find the last ten digits of the non-Mersenne prime: 28433 * 27830457 + 1."
+  "Find the last ten digits of the non-Mersenne prime: 28433 * 2^7830457 + 1."
   []
-  (mod (inc (* 28433 (bit-shift-left 1 7830457))) (expt 10 10)))
+  ; we can do powers of two by shifting bits
+  (let [twopower (big-shift-left 1 7830457)]
+    (mod (inc (* 28433 twopower)) (expt 10 10))))
 
 ; I confess I googled for help on this one after my first few attempts proved
 ; to be *way* too slow.  The solution here is basically a clojure implementation
